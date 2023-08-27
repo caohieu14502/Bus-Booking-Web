@@ -1,0 +1,79 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package ou.cnh.repository.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import ou.cnh.pojo.BusRoute;
+import ou.cnh.pojo.Place;
+import ou.cnh.pojo.Route;
+import ou.cnh.pojo.Trip;
+import ou.cnh.repository.RouteRepository;
+
+/**
+ *
+ * @author zedmo
+ */
+@Repository
+@Transactional
+public class RouteRepositoryImpl implements RouteRepository{
+
+    @Autowired
+    private LocalSessionFactoryBean factory;
+
+    
+    //Tài xế/Admin sẽ dùng hàm này nhiều để mà set up các chuyến đi
+    //Sử dụng để xuất các chuyến đi có nhiều lần đi nhất
+    public List<Route> getRoutes(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Route> q = b.createQuery(Route.class);
+
+        Root root = q.from(Route.class);
+        q.select(root);
+
+        Subquery subOrigin = q.subquery(Integer.class);
+        Subquery subDestination = q.subquery(Integer.class);
+        Root rSubPlaceOrigin = subOrigin.from(Place.class);
+        Root rSubPlaceDestination = subDestination.from(Place.class);
+        
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (params != null) {
+
+            String ori = params.get("origin");
+            String des = params.get("destination");
+            
+            if (ori != null && !ori .isEmpty() && des != null && !des .isEmpty()) {
+                
+                subOrigin.where(b.like(rSubPlaceOrigin.get("location"), String.format("%%%s%%", ori)))
+                        .distinct(true)
+                        .select(rSubPlaceOrigin.get("id"));
+                predicates.add(b.in(root.get("origin")).value(subOrigin));
+                        
+                subDestination.where(b.like(rSubPlaceDestination.get("location"), String.format("%%%s%%", des)))
+                        .distinct(true)
+                        .select(rSubPlaceDestination.get("id"));
+                predicates.add(b.in(root.get("destination")).value(subDestination));
+            }
+        }
+        q.where(predicates.toArray(Predicate[]::new))
+                .orderBy(b.desc(root.get("id")));
+        Query query = s.createQuery(q);
+        return query.getResultList();
+    }
+}

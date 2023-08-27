@@ -1,0 +1,27 @@
+Ve {
+  Ghe_ChuyenDi seat;
+  NhanVien nv;
+  TenKH tenkh;
+  
+}
+
+
+
+HoaDonMuaOnline{
+  List<Ghe_ChuyenDi> ls;
+  public xuatVe() {
+	list = new List<Ve>();
+	forEach(Ghe_ChuyenDi seat : this.ls){
+	   list.append(new Ve(seat, nv1, kh1.getName(),...))
+	}
+	return list;
+  }
+
+}
+
+
+
+
+Pojo class có thể có các class khác với trong database không?
+Vé chỉ là 1 class mà proberty của nó là tổng hợp lại các thông tin của class khác.
+Lưu vào thì quá thừa thông tin

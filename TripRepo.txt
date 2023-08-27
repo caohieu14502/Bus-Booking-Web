@@ -1,0 +1,65 @@
+public List<Object[]> getTrips(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
+
+        Root rTrip = q.from(Trip.class);
+        Root rRoute = q.from(Route.class);
+        Root rBusRoute = q.from(BusRoute.class);
+//        Root rPlace = q.from(Place.class);
+
+        Subquery subOrigin = q.subquery(Integer.class);
+        Subquery subDestination = q.subquery(Integer.class);
+        Root rSubPlaceOrigin = subOrigin.from(Place.class);
+        Root rSubPlaceDestination = subDestination.from(Place.class);
+        
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (params != null) {
+
+            //Lọc theo Route 
+            //Name này bên join với Route
+            String ori = params.get("origin");
+            String des = params.get("destination");
+            
+            if (ori != null && !ori .isEmpty() && des != null && !des .isEmpty()) {
+
+                
+//                predicates.add(b.like(rPlace.get("location"), String.format("%%%s%%", pu)));1
+                subOrigin.where(b.like(rSubPlaceOrigin.get("location"), String.format("%%%s%%", ori)))
+                        .distinct(true)
+                        .select(rSubPlaceOrigin.get("id"));
+                predicates.add(b.in(rRoute.get("origin")).value(subOrigin));
+                        
+                        
+//                predicates.add(b.like(rRoute.get("destination"), String.format("%%%s%%", des)));1
+                subDestination.where(b.like(rSubPlaceDestination.get("location"), String.format("%%%s%%", des)))
+                        .distinct(true)
+                        .select(rSubPlaceDestination.get("id"));
+                predicates.add(b.in(rRoute.get("destination")).value(subDestination));
+                
+            }
+            
+            //Lọc theo ngày xuất phát, theo giờ
+            String fd = params.get("startDate");
+            if (fd != null && !fd.isEmpty()) {
+                try {
+                    predicates.add(b.greaterThanOrEqualTo(rTrip.get("startTime"), f.parse(fd)));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TripRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        //Đằng nào cũng phải Join cả
+        predicates.add(b.equal(rTrip.get("busRouteId"), rBusRoute.get("id")));
+        predicates.add(b.equal(rBusRoute.get("routeId"), rRoute.get("id")));
+//        predicates.add(b.equal(rRoute.get("origin"), rPlace.get("id")));
+        
+        q.where(predicates.toArray(Predicate[]::new))
+                .orderBy(b.asc(rTrip.get("startTime")))
+                .multiselect(rTrip.get("id"), rRoute.get("origin"), rRoute.get("destination"),  rTrip.get("startTime"), rRoute.get("estimateTime"));
+
+        Query query = s.createQuery(q);
+        return query.getResultList();
+    }

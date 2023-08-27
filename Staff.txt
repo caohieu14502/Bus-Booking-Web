@@ -1,0 +1,12 @@
+@Entity
+@Table(name = "staff")
+@Getter
+@Setter
+@PrimaryKeyJoinColumn(name="user_id") 
+public class Staff extends User {
+    
+}
+
+
+//User class
+//@Inheritance(strategy = InheritanceType.JOINED)

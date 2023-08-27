@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache
+Software Foundation//DTD Tiles Configuration 3.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="baseLayout"
+                template="/WEB-INF/layout/base.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="header"
+                       value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="searchBox" value="" />
+        <put-attribute name="headingName" value="" />
+        <put-attribute name="pagination" value="" />
+        <put-attribute name="content" value="" />
+        <put-attribute name="footer"
+                       value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+    
+    <definition name="index" extends="baseLayout">
+        <put-attribute name="headingName" value="Admin Sites" />
+        <put-attribute name="title" value="Admin Sites" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/index.jsp" />
+    </definition>
+    
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="headingName" value="Admin Login" />
+        <put-attribute name="title" value="Admin Login" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/login.jsp" />
+    </definition>
+    
+    
+    <definition name="listRoute" extends="baseLayout">
+        <put-attribute name="title" value="Routes Management" />
+        <put-attribute name="headingName" value="List Routes" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/routes/listRoute.jsp" />
+    </definition>
+    <definition name="handleRoute" extends="baseLayout">
+        <put-attribute name="title" value="Add Route" />
+        <put-attribute name="headingName" value="Add Route" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/routes/handleRoute.jsp" />
+    </definition>
+    
+    
+    <definition name="listTrip" extends="baseLayout">
+        <put-attribute name="title" value="Trips Management" />
+        <put-attribute name="headingName" value="List Trips" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/trips/listTrip.jsp" />
+    </definition>
+    <definition name="handleTrip" extends="baseLayout">
+        <put-attribute name="title" value="Add Trip" />
+        <put-attribute name="headingName" value="Add Trip" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/trips/handleTrip.jsp" />
+    </definition>
+    <definition name="setPriceTrip" extends="baseLayout">
+        <put-attribute name="title" value="Set Price Trip" />
+        <put-attribute name="headingName" value="Set Price Trip" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/trips/pricingTrip.jsp" />
+    </definition>
+    
+    
+    <definition name="listStation" extends="baseLayout">
+        <put-attribute name="title" value="Stations Management" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="headingName" value="List Stations" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/stations/listStation.jsp" />
+    </definition>
+    <definition name="handleStation" extends="baseLayout">
+        <put-attribute name="title" value="Add Station" />
+        <put-attribute name="headingName" value="Add Station" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/stations/handleStation.jsp" />
+    </definition>
+    
+    
+    <definition name="listBus" extends="baseLayout">
+        <put-attribute name="title" value="Buses Management" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="headingName" value="List Buses" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/buses/listBus.jsp" />
+    </definition>
+    <definition name="handleBus" extends="baseLayout">
+        <put-attribute name="title" value="Add Bus" />
+        <put-attribute name="headingName" value="Add Bus" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/buses/handleBus.jsp" />
+    </definition>
+    
+    
+    <definition name="listBusType" extends="baseLayout">
+        <put-attribute name="title" value="Bus Types Management" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="headingName" value="List Bus Types" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/busTypes/listBusType.jsp" />
+    </definition>
+    <definition name="handleBusType" extends="baseLayout">
+        <put-attribute name="title" value="Add Bus Type" />
+        <put-attribute name="headingName" value="Add Type" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/busTypes/handleBusType.jsp" />
+    </definition>
+    
+    
+    <definition name="listUser" extends="baseLayout">
+        <put-attribute name="title" value="Users Management" />
+        <put-attribute name="headingName" value="List Users" />
+        <put-attribute name="searchBox" value="/WEB-INF/layout/searchBox.jsp" />
+        <put-attribute name="pagination" value="/WEB-INF/layout/pagination.jsp" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/users/listUser.jsp" />
+    </definition>
+    <definition name="handleUser" extends="baseLayout">
+        <put-attribute name="title" value="Add User" />
+        <put-attribute name="headingName" value="Add User" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/users/handleUser.jsp" />
+    </definition>
+
+</tiles-definitions>

@@ -1,0 +1,187 @@
+Table user {
+  id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50)
+  phone_number char(10)
+  address varchar(200)
+  email varchar(50) unique
+  state int
+
+  password varchar(100)
+  avatar varchar(100)
+  role_id int [not null]
+}
+
+Table role {
+  id int [pk, increment]
+  role_name varchar(30)
+}
+
+Table feedback {
+  id int [pk, increment]
+  subject_name varchar(200)
+  content text
+  stars int [not null]// đánh giá bao nhiêu sao 
+  state int 
+
+  created_at datetime
+  updated_at datetime
+
+  ticket_id int
+}
+
+Table bus_type {
+  id int [pk, increment]
+  name varchar(30)
+  type_cost float [default:1.0]
+}
+
+Table route {
+  id int [pk, increment]
+  name varchar(50)
+  origin int
+  destination int
+  duration time 
+  basic_price float [not null] // giá cơ bản
+}
+
+Table station {
+  id int [pk, increment]
+  location varchar(250) 
+  province varchar(50)
+}
+
+Table bus {
+  id int [pk, increment]
+  plate varchar(12)
+  number_of_seats int
+  state int
+
+  bus_type_id int
+}
+
+Table trip {
+  id int [pk, increment]
+  departure_time datetime
+  holiday_cost float [default:1.0] // hệ số giá cho ngày lễ
+  state int 
+
+  driver_id int
+  bus_id int
+  route_id int
+}
+
+Table seat__trip {
+  id int [pk, increment]
+  trip_id int
+  seat_id int
+
+  is_available boolean // có người đặt rồi hay chưa
+}
+
+Table seat_type {
+  id int [pk, increment]
+  name int
+  type_cost float [default:1.0]// hệ số giá cho ghế ngồi
+}
+
+Table seat {
+  id int [pk, increment]
+  seat_row_pos int  // cot
+  seat_col_pos int  // hang
+  state int
+
+  seat_type_id int
+  bus_id int
+}
+
+Table bill_type {
+  id int [pk, increment]
+  name varchar(30)
+}
+
+Table bill {
+  id int [pk, increment]
+  created_at datetime
+  state int  // Bill phai dc thanh toan trong vòng 72h, neu khong sẽ bị hủy
+  // dung Enum de xu ly
+
+  bill_type_id int
+}
+
+// tạo ra để tránh cho 1 seat ghế có giá trị null
+Table bill_detail {
+  id int [pk, increment]
+  bill_id int
+  seat__trip_id int
+}
+
+Table online_bill {
+  bill_id int [unique, not null]
+
+  client_id int
+}
+
+Table offline_bill {
+  bill_id int [unique, not null]
+  client_name varchar(50)
+  client_phone_number char(10)
+  staff_id int
+}
+
+Table ticket {
+  id int [pk, increment]
+  bill_detail_id int unique
+
+  staff_id int
+  // lúc print ra vé, ghi url /QR code: feedback our trip at https://.......
+  // tren trang kia co 1
+}
+
+
+// @Transient
+// private MultipartFile file;
+
+
+
+Ref: "user"."role_id" > "role"."id" 
+
+Ref: "seat__trip"."seat_id" > "seat"."id"
+
+Ref: "bill_detail"."bill_id" > "bill"."id"
+
+Ref: "bill_detail"."seat__trip_id" > "seat__trip"."id"
+
+Ref: "online_bill"."bill_id" > "bill"."id"
+
+Ref: "bill"."bill_type_id" > "bill_type"."id"
+
+Ref: "ticket"."bill_detail_id" > "bill_detail"."id" 
+
+Ref: "offline_bill"."bill_id" > "bill"."id" 
+
+Ref: "seat__trip"."trip_id" > "trip"."id"
+
+Ref: "bus_type"."id" < "bus"."bus_type_id"
+
+Ref: "ticket"."id" < "feedback"."ticket_id"
+
+Ref: "seat_type"."id" < "seat"."seat_type_id"
+
+Ref: "station"."id" < "route"."destination"
+
+Ref: "station"."id" < "route"."origin"
+
+Ref: "user"."id" < "trip"."driver_id"
+
+Ref: "user"."id" < "ticket"."staff_id"
+
+Ref: "user"."id" < "online_bill"."client_id"
+
+Ref: "user"."id" < "offline_bill"."staff_id"
+
+Ref: "route"."id" < "trip"."route_id"
+
+Ref: "bus"."id" < "trip"."bus_id"
+
+Ref: "bus"."id" < "seat"."bus_id"
