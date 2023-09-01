@@ -46,9 +46,10 @@
             </c:forEach>
         </form:select>
         <label for="destination" class="form-label">Chọn nơi đến:</label>
+        <div class="text-danger des_ori_same"></div>
     </div>
     <div class="form-floating mb-3 mt-3">
-        <form:input type="number" class="form-control" path="basicPrice" id="basicPrice" placeholder="Nhập giá" name="basicPrice" />
+        <form:input type="number" class="form-control" path="basicPrice" min="0" id="basicPrice" placeholder="Nhập giá" name="basicPrice" />
         <label for="name">Basic Price</label>
         <%--<form:errors path="name" element="div" cssClass="text-danger"/>--%>
     </div>    
@@ -56,16 +57,17 @@
     <div class="form-floating mt-3">
         <form:input type="number" class="form-control" path="durationDays" id="hour" placeholder="Nhập thời gian" name="hour" min="0"/>
         <label for="hour">Số ngày chạy ước tính(Nếu > 1 Ngày)</label>
-
     </div>
     <div class="form-floating mb-3">
-        <form:input type="text" class="form-control" path="durationTime" id="time" placeholder="Nhập thời gian" pattern="^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$"  name="time" />
+        <form:input type="text" class="form-control" path="durationTime" id="time" placeholder="Nhập thời gian" pattern=""  name="time" />
         <label for="time">Thời gian chạy ước tính(hh:mm:ss)</label>
+        <div class="text-danger" id="timeErr"></div>
+
     </div>
 
     <div class="form-floating mb-3 mt-3">
 
-        <button class="btn btn-success" type="submit">
+        <button class="btn btn-success" id="btn-Route" type="submit">
             <c:choose>
                 <c:when test="${route.id != null}">
                     Cập nhật Tuyến đi
@@ -79,16 +81,29 @@
 </form:form>
     
 <script>
-    
+    const submiBtn = document.getElementById("btn-Route");
+
     function submitValidateRoute(event) {
         var des = document.getElementById("destination").value;
         var ori = document.getElementById("origin").value;
         if(ori === des) {
             event.preventDefault();
             document.querySelectorAll(".des_ori_same").forEach(c =>{
-                c.contentText = "Nơi đi và Nơi đến không được trùng nhau!!!";
+                c.textContent = "Nơi đi và Nơi đến không được trùng nhau!!!";
+            });
+        } else {
+            document.querySelectorAll(".des_ori_same").forEach(c =>{
+                c.textContent = "";
             });
         }
+        var time= document.getElementById("time").value;
+        const patternTime = /^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/;
+        if ( !patternTime.test(time)) {
+            document.getElementById("timeErr").textContent = "Vui lòng nhập theo định dạng hh:mm:ss";
+            event.preventDefault();
+        } else {
+            document.getElementById("timeErr").textContent = "";
+        }
     }
-    document.querySelector("button").onClick = submitValidateRoute;
+    submiBtn.onclick = submitValidateRoute;
 </script>

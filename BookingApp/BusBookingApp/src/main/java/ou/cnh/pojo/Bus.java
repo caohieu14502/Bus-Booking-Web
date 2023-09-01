@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -47,12 +48,14 @@ public class Bus implements Serializable {
     private String plate;
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
+    @JsonIgnore
     @OneToMany(mappedBy = "busId")
     private Set<Seat> seatSet;
     @JoinColumn(name = "bus_type_id", referencedColumnName = "id")
     @ManyToOne
     private BusType busTypeId;
     @OneToMany(mappedBy = "busId")
+    @JsonIgnore
     private Set<Trip> tripSet;
 
     public Bus() {

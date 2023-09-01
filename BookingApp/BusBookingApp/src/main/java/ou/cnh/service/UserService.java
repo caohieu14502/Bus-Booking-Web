@@ -7,6 +7,7 @@ package ou.cnh.service;
 import java.util.List;
 import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 import ou.cnh.pojo.User;
 
 /**
@@ -20,4 +21,7 @@ public interface UserService extends UserDetailsService{
     boolean deleteUser(int id);
     boolean lockOrUnlock(int id);
     User getUserByMail(String mail);
+    boolean authUser(String username, String password);
+    User addUser(Map<String, String> params, MultipartFile avatar);
+
 }

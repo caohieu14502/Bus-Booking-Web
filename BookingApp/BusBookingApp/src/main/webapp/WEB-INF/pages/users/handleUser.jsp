@@ -92,7 +92,7 @@
     </c:if>
 
     <div class="form-floating mb-3 mt-3">
-        <button class="btn btn-success" type="submit">
+        <button class="btn btn-success" id="btn-user" type="submit">
             <c:choose>
                 <c:when test="${user.id != null}">
                     Cập nhật User
@@ -107,7 +107,7 @@
 
 
     <script>
-        const submiBtn = document.querySelector("button");
+        const submiBtn = document.getElementById("btn-user");
         function verifyPassword(event) {
         <c:if test="${user.id == null}">
             var pw = document.getElementById("password").value;

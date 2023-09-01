@@ -38,6 +38,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ou.cnh.pojo.Route;
 import ou.cnh.pojo.Trip;
 import ou.cnh.repository.TripRepository;
 
@@ -75,10 +76,14 @@ public class TripRepositoryImpl implements TripRepository {
 
         if (params != null) {
 
-            String routeId = params.get("routeId");
-            if (routeId != null && !routeId.isEmpty()) //                predicates.add(b.equal(rBusRoute.get("routeId"), Integer.valueOf(routeId)));
+            String destination = params.get("destination");
+            String orgin = params.get("origin");
+            if (destination != null && !destination.isEmpty() && orgin != null && !orgin.isEmpty()) //                predicates.add(b.equal(rBusRoute.get("routeId"), Integer.valueOf(routeId)));
             {
-                predicates.add(b.equal(rTrip.get("routeId"), Integer.valueOf(routeId)));
+                Root rRoute = q.from(Route.class);
+                predicates.add(b.like(rRoute.get("origin").get("province"), String.format("%%%s%%", orgin)));
+                predicates.add(b.like(rRoute.get("destination").get("province"), String.format("%%%s%%", destination)));
+                predicates.add(b.equal(rRoute.get("id"), rTrip.get("routeId")));
             }
 
             //Lọc theo ngày xuất phát, theo giờ
@@ -144,6 +149,7 @@ public class TripRepositoryImpl implements TripRepository {
     @Override
     public Trip getTripById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
+        System.out.printf("^^^^\n%s\n^^^^\n", s.get(Trip.class, id));
         return s.get(Trip.class, id);
     }
 
@@ -188,4 +194,5 @@ public class TripRepositoryImpl implements TripRepository {
             return false;
         }
     }
+
 }

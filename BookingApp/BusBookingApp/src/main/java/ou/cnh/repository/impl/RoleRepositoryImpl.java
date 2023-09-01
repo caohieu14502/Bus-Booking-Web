@@ -5,6 +5,7 @@
 package ou.cnh.repository.impl;
 
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,16 @@ public class RoleRepositoryImpl implements RoleRepository{
     private LocalSessionFactoryBean factory;
 
     @Override
-    public List<Role> getRoles() {
+    public List<Role> getRoles(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createQuery("FROM Role");
+        Query q;
+        if(params != null) {
+            String role = params.get("role");
+            q = s.createNamedQuery("Role.findByRoleName", Role.class);
+            q.setParameter("roleName", role);
+        }
+        else
+            q = s.createQuery("FROM Role");
 
         return q.getResultList();
     }

@@ -5,6 +5,7 @@
 package ou.cnh.repository;
 
 import java.util.List;
+import java.util.Map;
 import ou.cnh.pojo.Role;
 
 /**
@@ -12,5 +13,5 @@ import ou.cnh.pojo.Role;
  * @author zedmo
  */
 public interface RoleRepository {
-    List<Role> getRoles();
+    List<Role> getRoles(Map<String, String> params);
 }

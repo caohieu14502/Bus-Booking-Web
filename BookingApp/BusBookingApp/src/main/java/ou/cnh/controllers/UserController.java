@@ -35,7 +35,7 @@ public class UserController {
     
     @ModelAttribute
     public void commonAttr(Model model) {
-        model.addAttribute("roles", this.roleService.getRoles());
+        model.addAttribute("roles", this.roleService.getRoles(null));
 
     }
 

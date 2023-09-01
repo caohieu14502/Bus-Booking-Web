@@ -5,6 +5,7 @@
 package ou.cnh.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ou.cnh.pojo.Role;
@@ -21,8 +22,8 @@ public class RoleServiceImpl implements RoleService{
     private RoleRepository roleRepository;
     
     @Override
-    public List<Role> getRoles() {
-       return this.roleRepository.getRoles();
+    public List<Role> getRoles(Map<String, String> params) {
+       return this.roleRepository.getRoles(params);
     }
     
 }

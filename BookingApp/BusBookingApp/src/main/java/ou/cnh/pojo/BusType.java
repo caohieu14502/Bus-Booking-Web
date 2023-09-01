@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -46,6 +47,7 @@ public class BusType implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "type_cost")
     private Float typeCost;
+    @JsonIgnore
     @OneToMany(mappedBy = "busTypeId")
     private Set<Bus> busSet;
 

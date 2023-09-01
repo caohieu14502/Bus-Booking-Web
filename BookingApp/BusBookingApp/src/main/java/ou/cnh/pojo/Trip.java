@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -70,6 +71,7 @@ public class Trip implements Serializable {
     @JoinColumn(name = "driver_id", referencedColumnName = "id")
     @ManyToOne
     private User driverId;
+    @JsonIgnore
     @OneToMany(mappedBy = "tripId")
     private Set<Ticket> ticketSet;
     

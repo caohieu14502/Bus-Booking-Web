@@ -19,4 +19,6 @@ public interface UserRepository {
     User getUserById(int id);
     boolean deleteUser(int id);
     boolean lockOrUnlockUser(int id);
+    boolean authUser(String mail, String password);
+    User addUser(User user);
 }

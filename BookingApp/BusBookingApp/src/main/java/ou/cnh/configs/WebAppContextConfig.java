@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ou.cnh.formatter.BusFormatter;
+import ou.cnh.formatter.BusTypeFormatter;
 import ou.cnh.formatter.RoleFormatter;
 import ou.cnh.formatter.RouteFormatter;
 import ou.cnh.formatter.StationFormatter;
@@ -41,7 +42,8 @@ import ou.cnh.formatter.StationFormatter;
     "ou.cnh.controllers",
     "ou.cnh.repository",
     "ou.cnh.service",
-    "ou.cnh.filters"
+    "ou.cnh.filters",
+    "ou.cnh.components"
 })
 @PropertySource("classpath:configs.properties")
 public class WebAppContextConfig implements WebMvcConfigurer {
@@ -60,6 +62,8 @@ public class WebAppContextConfig implements WebMvcConfigurer {
         registry.addFormatter(new BusFormatter());
         registry.addFormatter(new RouteFormatter());
         registry.addFormatter(new RoleFormatter());
+        registry.addFormatter(new BusTypeFormatter());
+
     }
 
     //bật multipart, form data lên chỗ cần uphình

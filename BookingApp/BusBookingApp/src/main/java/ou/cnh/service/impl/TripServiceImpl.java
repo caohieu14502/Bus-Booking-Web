@@ -4,6 +4,7 @@
  */
 package ou.cnh.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class TripServiceImpl implements TripService{
 //                Map<String, String> routeParams = new HashMap<>();
 //                routeParams.put("origin", ori);
 //                routeParams.put("destination", des);
-//                routeRepo.getRoutes(routeParams)
+//                params.put("routeId", routeRepo.getRoutes(routeParams).get(0).getId().toString());
 //            }
 //        }
         return this.tripRepo.getTrips(params);

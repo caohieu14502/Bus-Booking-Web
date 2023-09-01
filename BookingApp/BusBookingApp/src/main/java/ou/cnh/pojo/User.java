@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -19,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -80,8 +80,10 @@ public class User implements Serializable {
     @Size(max = 100)
     @Column(name = "avatar")
     private String avatar;
+    @JsonIgnore
     @OneToMany(mappedBy = "driverId")
     private Set<Trip> tripSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<Bill> billSet;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -89,8 +91,10 @@ public class User implements Serializable {
     private Role roleId;
     
     @Transient
+    @JsonIgnore
     private String confirmPassword;
-    @Transient
+    @Transient 
+    @JsonIgnore
     private MultipartFile file;
 
     public User() {

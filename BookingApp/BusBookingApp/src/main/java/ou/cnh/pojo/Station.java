@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -54,11 +55,14 @@ public class Station implements Serializable {
     @Size(max = 200)
     @Column(name = "picture")
     private String picture;
+    @JsonIgnore
     @OneToMany(mappedBy = "destination")
     private Set<Route> routeSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "origin")
     private Set<Route> routeSet1;
     
+    @JsonIgnore
     @Transient
     private MultipartFile file;
 

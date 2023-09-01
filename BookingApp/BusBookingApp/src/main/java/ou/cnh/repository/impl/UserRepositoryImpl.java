@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ou.cnh.pojo.User;
@@ -35,15 +36,20 @@ public class UserRepositoryImpl implements UserRepository{
     private LocalSessionFactoryBean factory;
     @Autowired
     private Environment env;
+    @Autowired
+    private BCryptPasswordEncoder passEncoder;
 
     @Override
     public User getUserByMail(String mail) {
         Session s = this.factory.getObject().getCurrentSession();
         Query q = s.createNamedQuery("User.findByEmail", User.class);
         q.setParameter("email",mail);
-        
         List<User> u = q.getResultList();
-        return u.get(0);
+        try {
+            return u.get(0);
+        } catch (IndexOutOfBoundsException ex){
+            return null;
+        }
     }
 
     @Override
@@ -142,5 +148,22 @@ public class UserRepositoryImpl implements UserRepository{
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public boolean authUser(String mail, String password) {
+        User  u = this.getUserByMail(mail);
+        System.out.printf("user: %s\nemail: %s",u,mail);
+        if(u != null)
+            return this.passEncoder.matches(password, u.getPassword());
+        return false;
+    }
+
+    @Override
+    public User addUser(User u) {
+                Session s = this.factory.getObject().getCurrentSession();
+        s.save(u);
+        
+        return u;
     }
 }

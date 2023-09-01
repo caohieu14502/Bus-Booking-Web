@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -69,6 +70,7 @@ public class Route implements Serializable {
     @NotNull(message = "{route.origin.notNull}")
     @ManyToOne
     private Station origin;
+    @JsonIgnore
     @OneToMany(mappedBy = "routeId")
     private Set<Trip> tripSet;
 

@@ -23,18 +23,3 @@ function lockOrUnlockUser(path) {
         });
     }
 }
-
-
-    function submitValidateRoute(event) {
-        var des = document.getElementById("destination").value;
-        var ori = document.getElementById("origin").value;
-            event.preventDefault();
-        if(ori === des) {
-            document.querySelectorAll(".des_ori_same").forEach(c =>{
-                c.contentText = "Nơi đi và Nơi đến không được trùng nhau!!!";
-            });
-        }
-    }
-    document.querySelector("button").onClick = submitValidateRoute;
-
-
