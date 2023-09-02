@@ -4,23 +4,16 @@
  */
 package ou.cnh.repository.impl;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -167,7 +160,7 @@ public class TripRepositoryImpl implements TripRepository {
         Date in = new Date();
         Date out = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
         t.setSetOffDay(out);
-        System.out.printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n%s\n%s\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", t.getSetOffDay(), t.getSetOffTime());
+//        System.out.printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n%s\n%s\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", t.getSetOffDay(), t.getSetOffTime());
         Session s = this.factory.getObject().getCurrentSession();
         try {
             if (t.getId() == null) {
@@ -193,6 +186,12 @@ public class TripRepositoryImpl implements TripRepository {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public int addTrip(Trip t) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return (int) s.save(t);
     }
 
 }

@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -54,21 +53,20 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull(message = "{user.firstName.notNull}")
-    @Size(min = 1, max = 50, message = "{user.firstName.lenErr}")
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "first_name")
     private String firstName;
-    @Size(min = 1, max = 50, message = "{user.lastName.lenErr}")
+    @Size(max = 50)
     @Column(name = "last_name")
     private String lastName;
-    @Size(min = 10, max = 10, message = "{user.phoneNumber.lenErr}")
-    @Pattern(regexp="/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/", message="{user.phoneNumber.validRegex}")
+    @Size(max = 10)
     @Column(name = "phone_number")
     private String phoneNumber;
-    @Size(min = 5, max = 200, message = "{user.address.lenErr}")
+    @Size(max = 200)
     @Column(name = "address")
     private String address;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="{user.email.validRegex}") //if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 50)
     @Column(name = "email")
     private String email;
@@ -89,6 +87,7 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Role roleId;
+    
     
     @Transient
     @JsonIgnore

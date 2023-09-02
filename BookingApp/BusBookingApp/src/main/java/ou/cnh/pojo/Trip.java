@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,11 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Trip.findAll", query = "SELECT t FROM Trip t"),
     @NamedQuery(name = "Trip.findById", query = "SELECT t FROM Trip t WHERE t.id = :id"),
-    @NamedQuery(name = "Trip.findBySetOffDay", query = "SELECT t FROM Trip t WHERE t.setOffDay = :setOffDay"),
     @NamedQuery(name = "Trip.findByHolidayCost", query = "SELECT t FROM Trip t WHERE t.holidayCost = :holidayCost"),
-    @NamedQuery(name = "Trip.findByState", query = "SELECT t FROM Trip t WHERE t.state = :state"),
-    @NamedQuery(name = "Trip.findByPrice", query = "SELECT t FROM Trip t WHERE t.price = :price"),
-    @NamedQuery(name = "Trip.findBySetOffTime", query = "SELECT t FROM Trip t WHERE t.setOffTime = :setOffTime")})
+    @NamedQuery(name = "Trip.findByState", query = "SELECT t FROM Trip t WHERE t.state = :state")})
 public class Trip implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,18 +48,16 @@ public class Trip implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "set_off_day")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date setOffDay;
+    @Column(name = "set_off_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date setOffTime;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "holiday_cost")
     private Float holidayCost;
     @Column(name = "state")
     private Integer state;
-    @Column(name = "price")
-    private Double price;
-    @Column(name = "set_off_time")
-    @Temporal(TemporalType.TIME)
-    private Date setOffTime;
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
     @ManyToOne
     private Bus busId;
@@ -72,7 +68,7 @@ public class Trip implements Serializable {
     @ManyToOne
     private User driverId;
     @JsonIgnore
-    @OneToMany(mappedBy = "tripId")
+    @OneToMany(mappedBy = "tripId", cascade = CascadeType.ALL)
     private Set<Ticket> ticketSet;
     
     @Transient
@@ -95,14 +91,6 @@ public class Trip implements Serializable {
         this.id = id;
     }
 
-    public Date getSetOffDay() {
-        return setOffDay;
-    }
-
-    public void setSetOffDay(Date setOffDay) {
-        this.setOffDay = setOffDay;
-    }
-
     public Float getHolidayCost() {
         return holidayCost;
     }
@@ -117,22 +105,6 @@ public class Trip implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Date getSetOffTime() {
-        return setOffTime;
-    }
-
-    public void setSetOffTime(Date setOffTime) {
-        this.setOffTime = setOffTime;
     }
 
     public Bus getBusId() {
@@ -219,6 +191,34 @@ public class Trip implements Serializable {
      */
     public void setSetOffTimeString(String setOffTimeString) {
         this.setOffTimeString = setOffTimeString;
+    }
+
+    /**
+     * @return the setOffDay
+     */
+    public Date getSetOffDay() {
+        return setOffDay;
+    }
+
+    /**
+     * @param setOffDay the setOffDay to set
+     */
+    public void setSetOffDay(Date setOffDay) {
+        this.setOffDay = setOffDay;
+    }
+
+    /**
+     * @return the setOffTime
+     */
+    public Date getSetOffTime() {
+        return setOffTime;
+    }
+
+    /**
+     * @param setOffTime the setOffTime to set
+     */
+    public void setSetOffTime(Date setOffTime) {
+        this.setOffTime = setOffTime;
     }
     
 }

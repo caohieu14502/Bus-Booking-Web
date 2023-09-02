@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -36,40 +37,63 @@ public class SeatRepositoryImpl implements SeatRepository{
     @Autowired
     private Environment env;
 
+
     @Override
     public List<Seat> getSeats(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Seat> q = b.createQuery(Seat.class);
-
+        
         Root root = q.from(Seat.class);
         q.select(root);
-
+        
         List<Predicate> predicates = new ArrayList<>();
-
+        
         if (params != null) {
-
-            String bus = params.get("busId");
-            if (bus != null && !bus.isEmpty()) {
-                predicates.add(b.equal(root.get("busId"), Integer.parseInt(bus)));
-            }
-
+            
+            String busId = params.get("busId");
+            if(busId != null && !busId.isEmpty()) 
+                predicates.add(b.equal(root.get("busId"), Integer.valueOf(busId)));
+            
         }
+        
         q.where(predicates.toArray(Predicate[]::new))
                 .orderBy(b.asc(root.get("id")));
         Query query = s.createQuery(q);
-
+        
         if (params != null) {
             String p = params.get("page");
-            if (p != null && !p.isEmpty()) {
+            if(p != null && !p.isEmpty()) {
                 int page = Integer.parseInt(p);
                 int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
-
+                 
                 query.setMaxResults(pageSize);
                 query.setFirstResult((page - 1) * pageSize);
             }
         }
-        return null;
+        
+        return query.getResultList();
+    }
+
+    @Override
+    public Seat getSeatById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(Seat.class, id);
+    }
+
+    @Override
+    public boolean addOrUpdateSeat(Seat seat) {
+        Session s = this.factory.getObject().getCurrentSession();
+        try {
+            if (seat.getId() == null)
+                s.save(seat);
+            else
+                s.update(seat);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
     
 }

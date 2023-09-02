@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ou.cnh.pojo.Route;
 import ou.cnh.pojo.Trip;
 import ou.cnh.service.BusService;
 import ou.cnh.service.RouteService;
@@ -37,6 +36,8 @@ public class TripController {
     private TripService tripService;
     @Autowired
     private BusService busService;
+//    @Autowired
+//    private ticketSer
     @Autowired
     private Environment env;
     
@@ -112,4 +113,18 @@ public class TripController {
     public String updatePrice() {
         return "setPriceTrip";
     }
+    
+//    @GetMapping("/handleTickets/{tripId}")
+//    public String handleTickets(Model model, @PathVariable(value = "tripId") int tripId ) {
+//        model.addAttribute("tripId", tripId);
+//        return "handleTickets";
+//    }
+//    
+//    @PostMapping("/handleTickets")
+//    public String handleTickets(@RequestParam(value="selectedValue") String[] seats,
+//                                @RequestParam(value="tripId") int tripId) {
+////        if(this.seatService.addOrUpdateSeat(seats, busId))
+////            return "redirect:/admin/listTrip";
+//        return "handleTickets";
+//    }
 }

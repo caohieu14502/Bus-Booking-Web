@@ -4,9 +4,11 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t"),
     @NamedQuery(name = "Ticket.findById", query = "SELECT t FROM Ticket t WHERE t.id = :id"),
-    @NamedQuery(name = "Ticket.findByBillDetailId", query = "SELECT t FROM Ticket t WHERE t.billDetailId = :billDetailId"),
     @NamedQuery(name = "Ticket.findByIsAvailable", query = "SELECT t FROM Ticket t WHERE t.isAvailable = :isAvailable"),
     @NamedQuery(name = "Ticket.findByPrice", query = "SELECT t FROM Ticket t WHERE t.price = :price")})
 public class Ticket implements Serializable {
@@ -42,23 +43,24 @@ public class Ticket implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "bill_detail_id")
-    private Integer billDetailId;
     @Column(name = "is_available")
     private Boolean isAvailable;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
+    @JsonIgnore
     @OneToMany(mappedBy = "ticketId")
     private Set<Feedback> feedbackSet;
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
     private Bill billId;
     @JoinColumn(name = "seat_id", referencedColumnName = "id")
     @ManyToOne
     private Seat seatId;
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Trip tripId;
 
     public Ticket() {
@@ -74,14 +76,6 @@ public class Ticket implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getBillDetailId() {
-        return billDetailId;
-    }
-
-    public void setBillDetailId(Integer billDetailId) {
-        this.billDetailId = billDetailId;
     }
 
     public Boolean getIsAvailable() {

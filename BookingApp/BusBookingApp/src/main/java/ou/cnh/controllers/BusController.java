@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ou.cnh.pojo.Bus;
 import ou.cnh.service.BusService;
 import ou.cnh.service.BusTypeService;
+import ou.cnh.service.SeatService;
 
 /**
  *
@@ -31,6 +32,8 @@ public class BusController {
     private BusService busService;
     @Autowired
     private BusTypeService busTypeService;
+    @Autowired
+    private SeatService seatService;
     
     @RequestMapping("/listBus")
     public String list(Model model,
@@ -62,5 +65,19 @@ public class BusController {
             if(this.busService.addOrUpdateBus(b) == true)
                 return "redirect:/admin/listBus";
         return "handleBus";
+    }
+   
+    @GetMapping("/handleSeats/{busId}")
+    public String handleSeats(Model model, @PathVariable(value = "busId") int busId ) {
+        model.addAttribute("busId", busId);
+        return "handleSeats";
+    }
+    
+    @PostMapping("/handleSeats")
+    public String handleSeats(@RequestParam(value="selectedValue") String[] seats,
+                                @RequestParam(value="busId") int busId) {
+        if(this.seatService.addOrUpdateSeat(seats, busId))
+            return "redirect:/admin/listBus";
+        return "handleSeats";
     }
 }

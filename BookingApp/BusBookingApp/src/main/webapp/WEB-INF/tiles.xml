@@ -67,6 +67,13 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/pages/trips/pricingTrip.jsp" />
     </definition>
+    <definition name="handleTickets" extends="baseLayout">
+        <put-attribute name="title" value="Tickets" />
+        <put-attribute name="headingName" value="Tickets" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/trips/handleTickets.jsp" />
+    </definition>
+
     
     
     <definition name="listStation" extends="baseLayout">
@@ -99,6 +106,13 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/pages/buses/handleBus.jsp" />
     </definition>
+    <definition name="handleSeats" extends="baseLayout">
+        <put-attribute name="title" value="Seats" />
+        <put-attribute name="headingName" value="Seats" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/buses/handleSeats.jsp" />
+    </definition>
+
     
     
     <definition name="listBusType" extends="baseLayout">

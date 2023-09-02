@@ -37,8 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Bill.findByCreatedAt", query = "SELECT b FROM Bill b WHERE b.createdAt = :createdAt"),
     @NamedQuery(name = "Bill.findByState", query = "SELECT b FROM Bill b WHERE b.state = :state"),
     @NamedQuery(name = "Bill.findByMoneyPaid", query = "SELECT b FROM Bill b WHERE b.moneyPaid = :moneyPaid"),
-    @NamedQuery(name = "Bill.findByBillTypeId", query = "SELECT b FROM Bill b WHERE b.billTypeId = :billTypeId"),
-    @NamedQuery(name = "Bill.findByTotalPrice", query = "SELECT b FROM Bill b WHERE b.totalPrice = :totalPrice")})
+    @NamedQuery(name = "Bill.findByBillTypeId", query = "SELECT b FROM Bill b WHERE b.billTypeId = :billTypeId")})
 public class Bill implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,8 +56,6 @@ public class Bill implements Serializable {
     private Double moneyPaid;
     @Column(name = "bill_type_id")
     private Integer billTypeId;
-    @Column(name = "totalPrice")
-    private Double totalPrice;
     @OneToMany(mappedBy = "billId")
     private Set<Ticket> ticketSet;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -110,14 +107,6 @@ public class Bill implements Serializable {
 
     public void setBillTypeId(Integer billTypeId) {
         this.billTypeId = billTypeId;
-    }
-
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     @XmlTransient

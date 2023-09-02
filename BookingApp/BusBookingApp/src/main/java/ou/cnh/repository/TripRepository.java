@@ -6,7 +6,6 @@ package ou.cnh.repository;
 
 import java.util.List;
 import java.util.Map;
-import ou.cnh.pojo.Route;
 import ou.cnh.pojo.Trip;
 
 /**
@@ -20,4 +19,5 @@ public interface TripRepository {
     Trip getTripById(int id);
     boolean addOrUpdateTrip(Trip t);
     boolean deleteTrip(int id);
+    int addTrip(Trip t);
 }

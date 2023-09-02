@@ -18,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -49,7 +48,6 @@ public class Station implements Serializable {
     @Column(name = "location")
     private String location;
     @Size(max = 50)
-    @NotNull(message = "{station.province.notNull}")
     @Column(name = "province")
     private String province;
     @Size(max = 200)
@@ -62,8 +60,8 @@ public class Station implements Serializable {
     @OneToMany(mappedBy = "origin")
     private Set<Route> routeSet1;
     
+    @Transient 
     @JsonIgnore
-    @Transient
     private MultipartFile file;
 
     public Station() {

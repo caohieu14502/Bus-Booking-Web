@@ -14,4 +14,6 @@ import ou.cnh.pojo.Seat;
  */
 public interface SeatService {
     List<Seat> getSeats(Map<String, String> params);
+    Seat getSeatById(int id);
+    boolean addOrUpdateSeat(String[] seats, int budId);
 }

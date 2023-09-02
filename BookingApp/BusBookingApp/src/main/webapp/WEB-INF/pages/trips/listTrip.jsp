@@ -39,7 +39,7 @@
                 <td>${t.busId.plate}</td>
 
                 <td>
-                    <a href="<c:url value="/admin/handleTrip/${t.id}"/>" class="btn btn-primary">Cập nhật</a>
+                    <a href="<c:url value="/admin/handleTrip/${t.id}"/>" class="btn btn-primary">Cập nhật Trips</a>
                     <button class="btn btn-danger" onclick="deleteApi('<c:url value="/api/handleTrip/${t.id}" />')">Xóa</button>
                 </td>
             </tr>

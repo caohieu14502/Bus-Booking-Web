@@ -6,6 +6,7 @@ package ou.cnh.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,9 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Route.findAll", query = "SELECT r FROM Route r"),
     @NamedQuery(name = "Route.findById", query = "SELECT r FROM Route r WHERE r.id = :id"),
     @NamedQuery(name = "Route.findByName", query = "SELECT r FROM Route r WHERE r.name = :name"),
-    @NamedQuery(name = "Route.findByDurationTime", query = "SELECT r FROM Route r WHERE r.durationTime = :durationTime"),
-    @NamedQuery(name = "Route.findByBasicPrice", query = "SELECT r FROM Route r WHERE r.basicPrice = :basicPrice"),
-    @NamedQuery(name = "Route.findByDurationDays", query = "SELECT r FROM Route r WHERE r.durationDays = :durationDays")})
+    @NamedQuery(name = "Route.findByBasicPrice", query = "SELECT r FROM Route r WHERE r.basicPrice = :basicPrice")})
 public class Route implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,24 +48,18 @@ public class Route implements Serializable {
     @Size(max = 50)
     @Column(name = "name")
     private String name;
-    @Size(max = 12)
+    @Column(name = "duration_days")
+    private int durationDays;
     @Column(name = "duration_time")
     private String durationTime;
     @Basic(optional = false)
     @NotNull
-    @Min(value = 500, message = "{route.basicPrice.min}")
     @Column(name = "basic_price")
     private float basicPrice;
-    @Column(name = "duration_days")
-    @NotNull(message = "{route.durationDay.notNull}")
-    @Min(value = 0, message = "{route.durationDay.min}")
-    private Integer durationDays;
     @JoinColumn(name = "destination", referencedColumnName = "id")
-    @NotNull(message = "{route.destination.notNull}")
     @ManyToOne
     private Station destination;
     @JoinColumn(name = "origin", referencedColumnName = "id")
-    @NotNull(message = "{route.origin.notNull}")
     @ManyToOne
     private Station origin;
     @JsonIgnore
@@ -102,28 +94,12 @@ public class Route implements Serializable {
         this.name = name;
     }
 
-    public String getDurationTime() {
-        return durationTime;
-    }
-
-    public void setDurationTime(String durationTime) {
-        this.durationTime = durationTime;
-    }
-
     public float getBasicPrice() {
         return basicPrice;
     }
 
     public void setBasicPrice(float basicPrice) {
         this.basicPrice = basicPrice;
-    }
-
-    public Integer getDurationDays() {
-        return durationDays;
-    }
-
-    public void setDurationDays(Integer durationDays) {
-        this.durationDays = durationDays;
     }
 
     public Station getDestination() {
@@ -174,6 +150,34 @@ public class Route implements Serializable {
     @Override
     public String toString() {
         return "ou.cnh.pojo.Route[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the durationDays
+     */
+    public int getDurationDays() {
+        return durationDays;
+    }
+
+    /**
+     * @param durationDays the durationDays to set
+     */
+    public void setDurationDays(int durationDays) {
+        this.durationDays = durationDays;
+    }
+
+    /**
+     * @return the durationTime
+     */
+    public String getDurationTime() {
+        return durationTime;
+    }
+
+    /**
+     * @param durationTime the durationTime to set
+     */
+    public void setDurationTime(String durationTime) {
+        this.durationTime = durationTime;
     }
     
 }

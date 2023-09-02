@@ -54,8 +54,8 @@ public class Bus implements Serializable {
     @JoinColumn(name = "bus_type_id", referencedColumnName = "id")
     @ManyToOne
     private BusType busTypeId;
-    @OneToMany(mappedBy = "busId")
     @JsonIgnore
+    @OneToMany(mappedBy = "busId")
     private Set<Trip> tripSet;
 
     public Bus() {

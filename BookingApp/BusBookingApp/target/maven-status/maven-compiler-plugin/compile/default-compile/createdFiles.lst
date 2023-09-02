@@ -7,12 +7,14 @@ ou\cnh\pojo\Trip.class
 ou\cnh\controllers\IndexController.class
 ou\cnh\configs\TilesConfig.class
 ou\cnh\configs\DispatcherServletInit.class
+ou\cnh\repository\impl\TicketRepositoryImpl.class
 ou\cnh\service\impl\BusServiceImpl.class
 ou\cnh\formatter\RouteFormatter.class
 ou\cnh\configs\SpringSecurityConfig.class
 ou\cnh\controllers\ApiUserController.class
 ou\cnh\controllers\LoginController.class
 ou\cnh\repository\impl\SeatRepositoryImpl.class
+ou\cnh\controllers\ApiBillController.class
 ou\cnh\pojo\Seat.class
 ou\cnh\repository\impl\BusRepositoryImpl.class
 ou\cnh\pojo\Ticket.class
@@ -20,6 +22,7 @@ ou\cnh\formatter\BusTypeFormatter.class
 ou\cnh\pojo\Station.class
 ou\cnh\pojo\Feedback.class
 ou\cnh\repository\BusRepository.class
+ou\cnh\service\impl\TicketServiceImpl.class
 ou\cnh\service\impl\RouteServiceImpl.class
 ou\cnh\controllers\ApiStationController.class
 ou\cnh\service\TripService.class
@@ -27,6 +30,7 @@ ou\cnh\pojo\Bill.class
 ou\cnh\components\JwtService.class
 ou\cnh\controllers\BusController.class
 ou\cnh\repository\StatsRepository.class
+ou\cnh\repository\impl\BillRepositoryImpl.class
 ou\cnh\controllers\ApiBusController.class
 ou\cnh\repository\SeatRepository.class
 ou\cnh\service\impl\BusTypeServiceImpl.class
@@ -34,7 +38,10 @@ ou\cnh\pojo\Bus.class
 ou\cnh\configs\JwtSecurityConfig.class
 ou\cnh\repository\RouteRepository.class
 ou\cnh\service\BusTypeService.class
+ou\cnh\service\BillService.class
 ou\cnh\filters\CustomAccessDeniedHandler.class
+ou\cnh\pojo\Cart.class
+ou\cnh\repository\TicketRepository.class
 ou\cnh\pojo\BusType.class
 ou\cnh\controllers\ApiTripController.class
 ou\cnh\controllers\RouteController.class
@@ -48,9 +55,11 @@ ou\cnh\repository\impl\StationRepositoryImpl.class
 ou\cnh\service\impl\SeatServiceImpl.class
 ou\cnh\service\impl\StationServiceImpl.class
 ou\cnh\service\impl\TripServiceImpl.class
+ou\cnh\repository\BillRepository.class
 ou\cnh\service\RoleService.class
 ou\cnh\configs\SecurityWebApplicationInitalizer.class
 ou\cnh\pojo\Role.class
+ou\cnh\service\TicketService.class
 ou\cnh\filters\JwtAuthenticationTokenFilter.class
 ou\cnh\repository\impl\TripRepositoryImpl.class
 ou\cnh\service\BusService.class
@@ -64,7 +73,9 @@ ou\cnh\controllers\BusTypeController.class
 ou\cnh\controllers\ApiRouteController.class
 ou\cnh\controllers\UserController.class
 ou\cnh\configs\WebAppContextConfig.class
+ou\cnh\controllers\ApiTicketController.class
 ou\cnh\pojo\Route.class
+ou\cnh\service\impl\BillServiceImpl.class
 ou\cnh\controllers\ApiBusTypeController.class
 ou\cnh\repository\impl\UserRepositoryImpl.class
 ou\cnh\service\StationService.class
