@@ -55,7 +55,7 @@ public class Trip implements Serializable {
     private Date setOffTime;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "holiday_cost")
-    private Float holidayCost;
+    private Double holidayCost;
     @Column(name = "state")
     private Integer state;
     @JoinColumn(name = "bus_id", referencedColumnName = "id")
@@ -91,11 +91,11 @@ public class Trip implements Serializable {
         this.id = id;
     }
 
-    public Float getHolidayCost() {
+    public Double getHolidayCost() {
         return holidayCost;
     }
 
-    public void setHolidayCost(Float holidayCost) {
+    public void setHolidayCost(Double holidayCost) {
         this.holidayCost = holidayCost;
     }
 

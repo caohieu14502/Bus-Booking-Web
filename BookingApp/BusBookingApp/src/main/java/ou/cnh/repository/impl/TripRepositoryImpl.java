@@ -191,7 +191,12 @@ public class TripRepositoryImpl implements TripRepository {
     @Override
     public int addTrip(Trip t) {
         Session s = this.factory.getObject().getCurrentSession();
-        return (int) s.save(t);
+        try{
+            return (int) s.save(t);
+        } catch(HibernateException ex) {
+            ex.printStackTrace();
+            return -1;
+        }
     }
 
 }

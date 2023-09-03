@@ -46,7 +46,7 @@ public class BusType implements Serializable {
     private String name;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "type_cost")
-    private Float typeCost;
+    private Double typeCost;
     @JsonIgnore
     @OneToMany(mappedBy = "busTypeId")
     private Set<Bus> busSet;
@@ -74,11 +74,11 @@ public class BusType implements Serializable {
         this.name = name;
     }
 
-    public Float getTypeCost() {
+    public Double getTypeCost() {
         return typeCost;
     }
 
-    public void setTypeCost(Float typeCost) {
+    public void setTypeCost(Double typeCost) {
         this.typeCost = typeCost;
     }
 

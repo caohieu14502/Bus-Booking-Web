@@ -4,6 +4,7 @@
  */
 package ou.cnh.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -56,6 +57,7 @@ public class Bill implements Serializable {
     private Double moneyPaid;
     @Column(name = "bill_type_id")
     private Integer billTypeId;
+    @JsonIgnore
     @OneToMany(mappedBy = "billId")
     private Set<Ticket> ticketSet;
     @JoinColumn(name = "user_id", referencedColumnName = "id")

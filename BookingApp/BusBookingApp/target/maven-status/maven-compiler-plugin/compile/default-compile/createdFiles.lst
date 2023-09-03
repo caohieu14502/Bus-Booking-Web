@@ -52,14 +52,17 @@ ou\cnh\pojo\User.class
 ou\cnh\repository\impl\RoleRepositoryImpl.class
 ou\cnh\service\impl\UserServiceImpl.class
 ou\cnh\repository\impl\StationRepositoryImpl.class
+ou\cnh\configs\GoogleVerifierConfig.class
 ou\cnh\service\impl\SeatServiceImpl.class
 ou\cnh\service\impl\StationServiceImpl.class
 ou\cnh\service\impl\TripServiceImpl.class
 ou\cnh\repository\BillRepository.class
 ou\cnh\service\RoleService.class
 ou\cnh\configs\SecurityWebApplicationInitalizer.class
+ou\cnh\controllers\ApiGoogleController.class
 ou\cnh\pojo\Role.class
 ou\cnh\service\TicketService.class
+.netbeans_automatic_build
 ou\cnh\filters\JwtAuthenticationTokenFilter.class
 ou\cnh\repository\impl\TripRepositoryImpl.class
 ou\cnh\service\BusService.class

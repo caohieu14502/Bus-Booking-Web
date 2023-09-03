@@ -63,24 +63,27 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public boolean addOrUpdateTrip(Trip t) {
-        if (this.tripRepo.addOrUpdateTrip(t)) {
-//            if(t.getId() == null && t.getBusId() != null) {
-            Map<String, String> params = new HashMap<>();
-            params.put("busId", t.getBusId().getId().toString());
-            this.seatRepo.getSeats(params).forEach(s -> {
-                Ticket tick = new Ticket();
-                tick.setSeatId(s);
-                float x = t.getRouteId().getBasicPrice() * (t.getHolidayCost() + this.busRepo.getBusById(t.getBusId().getId()).getBusTypeId().getTypeCost() - 1);
-                System.out.printf("^^^\n%.1f\n%.1f\n%.1f\n%.1f\n^^^^\n",t.getRouteId().getBasicPrice(), t.getHolidayCost(), this.busRepo.getBusById(t.getBusId().getId()).getBusTypeId().getTypeCost() - 1, x);
-                tick.setPrice((double) x);
-                tick.setIsAvailable(true);
-                tick.setTripId(t);
-                this.ticketRepo.addOrUpdateTicket(tick);
-            });
-//        }
-            return true;
+        if (t.getId() == null) { // add
+            if (this.tripRepo.addOrUpdateTrip(t)) {
+                Map<String, String> params = new HashMap<>();
+                params.put("busId", t.getBusId().getId().toString());
+                this.seatRepo.getSeats(params).forEach(s -> {
+                    Ticket tick = new Ticket();
+                    tick.setSeatId(s);
+                    double x = this.routeRepo.getRouteById(t.getRouteId().getId()).getBasicPrice() * (t.getHolidayCost() + this.busRepo.getBusById(t.getBusId().getId()).getBusTypeId().getTypeCost() - 1);
+                    double roundX = Math.ceil(x / 1000) * 1000;
+                    System.out.printf("^^^\n%.1f\n%.1f\n%.1f\n%.1f\n^^^^\n", this.routeRepo.getRouteById(t.getRouteId().getId()).getBasicPrice(), t.getHolidayCost(), this.busRepo.getBusById(t.getBusId().getId()).getBusTypeId().getTypeCost() - 1, x);
+                    tick.setPrice(roundX);
+                    tick.setIsAvailable(true);
+                    tick.setTripId(t);
+                    this.ticketRepo.addOrUpdateTicket(tick);
+                });
+                return true;
+            }
+            return false;
+        } else { //update
+            return this.tripRepo.addOrUpdateTrip(t);
         }
-        return false;
     }
 
     @Override

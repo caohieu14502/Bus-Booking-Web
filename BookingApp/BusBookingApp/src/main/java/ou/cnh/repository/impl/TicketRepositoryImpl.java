@@ -47,6 +47,11 @@ public class TicketRepositoryImpl implements TicketRepository{
             String tripId = params.get("tripId");
             if(tripId != null && !tripId.isEmpty()) 
                 predicates.add(b.equal(root.get("tripId"), Integer.valueOf(tripId)));
+            
+            String email = params.get("email");
+            System.out.println(email);
+            if(email != null && !email.isEmpty()) 
+                predicates.add(b.like(root.get("billId").get("userId").get("email"), String.format("%%%s%%", email)));
         }
         
         q.where(predicates.toArray(Predicate[]::new))
@@ -58,7 +63,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 
     @Override
     public Ticket getTicketById(int id) {
-                Session s = this.factory.getObject().getCurrentSession();
+        Session s = this.factory.getObject().getCurrentSession();
         return s.get(Ticket.class, id);
     }
 

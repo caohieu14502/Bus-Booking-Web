@@ -5,6 +5,7 @@
 package ou.cnh.controllers;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ou.cnh.components.JwtService;
+import ou.cnh.pojo.Ticket;
 import ou.cnh.pojo.User;
+import ou.cnh.service.TicketService;
 import ou.cnh.service.UserService;
 
 /**
@@ -38,6 +41,8 @@ public class ApiUserController {
     private UserService userService;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private TicketService ticketService;
     
     @DeleteMapping("/handleUser/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -84,5 +89,17 @@ public class ApiUserController {
     public ResponseEntity<User> details(Principal user) {
         User u = this.userService.getUserByMail(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+    
+    @PostMapping(path="/printTicket/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<List<Ticket>> printTicket(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.ticketService.getTickets(params), HttpStatus.OK);
+    }
+    
+    @PostMapping(path="/userMail/")
+    @CrossOrigin
+    public ResponseEntity<User> user(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.userService.getUserByMail(params.get("email")), HttpStatus.OK);
     }
 }
