@@ -33,7 +33,8 @@ import ou.cnh.service.UserService;
  * @author zedmo
  */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
+
     @Autowired
     private Cloudinary cloudinary;
     @Autowired
@@ -42,12 +43,15 @@ public class UserServiceImpl implements UserService{
     private RoleRepository roleRepo;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User u = this.userRepo.getUserByMail(email);
-        if (u==null)
+        if (u == null) {
             throw new UsernameNotFoundException("Invalid Email");
+        }
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(u.getRoleId().getRoleName()));
         return new org.springframework.security.core.userdetails.User(
@@ -56,30 +60,37 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean addOrUpdateUser(User u) {
-        if(u.getId() == null){
-            String password = u.getPassword();  
+        if (u.getId() == null) {
+            String password = u.getPassword();
             u.setPassword(this.passwordEncoder.encode(password));
-            u.setActive(Boolean.FALSE);
+            u.setActive(Boolean.TRUE);
             //Xét Client User ở đây
             //if client is register then
-            //u.setRole(role.getRole==Client);
+            if (u.getRoleId() == null) {
+                Map<String, String> params = new HashMap<>();
+                params.put("role", "ROLE_Client");
+                u.setRoleId(roleRepo.getRoles(params).get(0));
+            }
+
         }
-        if(!u.getFile().isEmpty()) {
-            try {
-                Map res = this.cloudinary.uploader().upload(u.getFile().getBytes(), ObjectUtils.asMap("resource_type", "auto"));
-                u.setAvatar(res.get("secure_url").toString());
-            } catch (IOException ex) {
-                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (u.getFile() != null) {
+            if (!u.getFile().isEmpty()) {
+                try {
+                    Map res = this.cloudinary.uploader().upload(u.getFile().getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+                    u.setAvatar(res.get("secure_url").toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return this.userRepo.addOrUpdateUser(u);
     }
-    
-//    https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
 
+//    https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
     @Override
     public List<User> getUsers(Map<String, String> params) {
-       return this.userRepo.getUsers(params);
+        return this.userRepo.getUsers(params);
     }
 
     @Override
@@ -119,14 +130,14 @@ public class UserServiceImpl implements UserService{
         u.setRoleId(roleRepo.getRoles(roleParams).get(0));
         if (!avatar.isEmpty()) {
             try {
-                Map res = this.cloudinary.uploader().upload(avatar.getBytes(), 
+                Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
                         ObjectUtils.asMap("resource_type", "auto"));
                 u.setAvatar(res.get("secure_url").toString());
             } catch (IOException ex) {
                 Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         this.userRepo.addUser(u);
         return u;
     }

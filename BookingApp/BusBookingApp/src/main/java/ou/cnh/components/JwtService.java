@@ -88,7 +88,12 @@ public class JwtService {
         if (token == null || token.trim().length() == 0) {
             return false;
         }
-        String username = getUsernameFromToken(token);
+        String username = null;
+        try {
+            username = getUsernameFromToken(token);
+        } catch (NullPointerException ex) {
+            return false;
+        }
         
         return !(username == null || username.isEmpty() || isTokenExpired(token));
     }

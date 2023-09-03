@@ -59,10 +59,8 @@ ou\cnh\service\impl\TripServiceImpl.class
 ou\cnh\repository\BillRepository.class
 ou\cnh\service\RoleService.class
 ou\cnh\configs\SecurityWebApplicationInitalizer.class
-ou\cnh\controllers\ApiGoogleController.class
 ou\cnh\pojo\Role.class
 ou\cnh\service\TicketService.class
-.netbeans_automatic_build
 ou\cnh\filters\JwtAuthenticationTokenFilter.class
 ou\cnh\repository\impl\TripRepositoryImpl.class
 ou\cnh\service\BusService.class

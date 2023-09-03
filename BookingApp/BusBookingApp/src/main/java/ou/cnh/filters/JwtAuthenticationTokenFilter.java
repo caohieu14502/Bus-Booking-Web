@@ -4,9 +4,14 @@
  */
 package ou.cnh.filters;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -35,14 +40,52 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
     private JwtService jwtService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private GoogleIdTokenVerifier verifier;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String authToken = httpRequest.getHeader(TOKEN_HEADER);
-        if (jwtService.validateTokenLogin(authToken)) {
-            String username = jwtService.getUsernameFromToken(authToken);
+
+        boolean tokenIsValid = false;
+        GoogleIdToken idToken = null;
+        if (authToken != null) {
+            idToken = GoogleIdToken.parse(verifier.getJsonFactory(), authToken);
+            try {
+                tokenIsValid = (idToken != null) && verifier.verify(idToken);
+            } catch (GeneralSecurityException ex) {
+                Logger.getLogger(JwtAuthenticationTokenFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        boolean jwtNormalIsValid = jwtService.validateTokenLogin(authToken);
+        if (jwtNormalIsValid || tokenIsValid) {
+            String username = "nulllllllllllllllllllllllll";
+            if (jwtNormalIsValid) {
+                username = jwtService.getUsernameFromToken(authToken);
+            } else if (tokenIsValid) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                username = payload.getEmail();
+
+                if (userService.getUserByMail(username) == null) {
+                    User nu = new User();
+
+                    // Print user identifier
+                    String userId = payload.getSubject();
+                    System.out.println("User ID: " + userId);
+
+                    // Get profile information from payload
+                    nu.setEmail(payload.getEmail());
+                    nu.setAvatar((String) payload.get("picture"));
+                    nu.setLastName((String) payload.get("family_name"));
+                    nu.setFirstName((String) payload.get("given_name"));
+                    nu.setPassword("123456");
+
+                    userService.addOrUpdateUser(nu);
+                }
+
+            }
             System.out.printf("^^^^^^^^^^^^\n%s\n^^^^^^^^^^^^^", username);
             User user = userService.getUserByMail(username);
             if (user != null) {
@@ -50,10 +93,10 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                 boolean accountNonExpired = true;
                 boolean credentialsNonExpired = true;
                 boolean accountNonLocked = true;
-                
+
                 Set<GrantedAuthority> authorities = new HashSet<>();
                 authorities.add(new SimpleGrantedAuthority(user.getRoleId().getRoleName()));
-                
+
                 UserDetails userDetail = new org.springframework.security.core.userdetails.User(username, user.getPassword(), enabled, accountNonExpired,
                         credentialsNonExpired, accountNonLocked, authorities);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
@@ -62,6 +105,7 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
         chain.doFilter(request, response);
     }
 }
