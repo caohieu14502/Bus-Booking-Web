@@ -73,6 +73,7 @@ public class User implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @Size(max = 100)
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Size(max = 100)
@@ -87,6 +88,9 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Role roleId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Set<Feedback> feedbackSet;
     
     
     @Transient
@@ -257,6 +261,15 @@ public class User implements Serializable {
      */
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    @XmlTransient
+    public Set<Feedback> getFeedbackSet() {
+        return feedbackSet;
+    }
+
+    public void setFeedbackSet(Set<Feedback> feedbackSet) {
+        this.feedbackSet = feedbackSet;
     }
     
 }

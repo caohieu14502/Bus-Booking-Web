@@ -70,6 +70,9 @@ public class Trip implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "tripId", cascade = CascadeType.ALL)
     private Set<Ticket> ticketSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripId")
+    private Set<Feedback> feedbackSet;
     
     @Transient
     private String setOffDayString;
@@ -219,6 +222,15 @@ public class Trip implements Serializable {
      */
     public void setSetOffTime(Date setOffTime) {
         this.setOffTime = setOffTime;
+    }
+    
+    @XmlTransient
+    public Set<Feedback> getFeedbackSet() {
+        return feedbackSet;
+    }
+
+    public void setFeedbackSet(Set<Feedback> feedbackSet) {
+        this.feedbackSet = feedbackSet;
     }
     
 }

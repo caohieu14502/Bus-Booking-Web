@@ -115,15 +115,13 @@ public class ApiUserController {
 
     @PostMapping(path = "/printTicket/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<List<Ticket>> printTicket(@RequestParam Map<String, String> params
-    ) {
+    public ResponseEntity<List<Ticket>> printTicket(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.ticketService.getTickets(params), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/userMail/")
+    @PostMapping(path = "/userMail/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<User> user(@RequestParam Map<String, String> params
-    ) {
+    public ResponseEntity<User> user(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.userService.getUserByMail(params.get("email")), HttpStatus.OK);
     }
 }

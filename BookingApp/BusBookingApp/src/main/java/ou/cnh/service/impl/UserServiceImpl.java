@@ -43,8 +43,6 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepo;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

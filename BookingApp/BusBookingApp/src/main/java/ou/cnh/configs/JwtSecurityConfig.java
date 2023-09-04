@@ -77,8 +77,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**/comments/").permitAll();
         http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers("/api/printTicket/").access("hasRole('ROLE_Staff')")
-                .antMatchers("/api/userMail/").access("hasRole('ROLE_Staff')")
+                .antMatchers(HttpMethod.POST,"/api/printTicket/").access("hasRole('ROLE_Staff')")
+                .antMatchers(HttpMethod.POST,"/api/userMail/").access("hasRole('ROLE_Staff')")
                 .antMatchers(HttpMethod.GET, "/api/**").access("hasRole('ROLE_Admin') or hasRole('ROLE_Client') or hasRole('ROLE_Driver') or hasRole('ROLE_Staff')")
                 .antMatchers(HttpMethod.POST, "/api/**").access("hasRole('ROLE_Admin') or hasRole('ROLE_Client') or hasRole('ROLE_Driver') or hasRole('ROLE_Staff')")
                 .antMatchers(HttpMethod.DELETE, "/api/**").access("hasRole('ROLE_Admin') or hasRole('ROLE_Client') or hasRole('ROLE_Driver') or hasRole('ROLE_Staff')").and()

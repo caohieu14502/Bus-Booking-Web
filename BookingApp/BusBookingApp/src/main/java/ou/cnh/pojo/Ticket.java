@@ -48,9 +48,6 @@ public class Ticket implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
-    @JsonIgnore
-    @OneToMany(mappedBy = "ticketId")
-    private Set<Feedback> feedbackSet;
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -60,7 +57,7 @@ public class Ticket implements Serializable {
     private Seat seatId;
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+//    @JsonIgnore
     private Trip tripId;
 
     public Ticket() {
@@ -92,15 +89,6 @@ public class Ticket implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    @XmlTransient
-    public Set<Feedback> getFeedbackSet() {
-        return feedbackSet;
-    }
-
-    public void setFeedbackSet(Set<Feedback> feedbackSet) {
-        this.feedbackSet = feedbackSet;
     }
 
     public Bill getBillId() {
