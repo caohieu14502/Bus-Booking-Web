@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -45,9 +46,11 @@ public class Station implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 250)
+    @NotNull(message = "{station.location.notNull}")
     @Column(name = "location")
     private String location;
     @Size(max = 50)
+    @NotNull(message = "{station.province.notNull}")
     @Column(name = "province")
     private String province;
     @Size(max = 200)
@@ -62,6 +65,7 @@ public class Station implements Serializable {
     
     @Transient 
     @JsonIgnore
+    @NotNull(message = "{station.picture.notNull}")
     private MultipartFile file;
 
     public Station() {

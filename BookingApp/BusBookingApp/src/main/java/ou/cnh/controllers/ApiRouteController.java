@@ -7,6 +7,7 @@ package ou.cnh.controllers;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,11 +32,22 @@ public class ApiRouteController {
     
     @Autowired
     private RouteService routeService;
+    @Autowired
+    private Environment env;
     
     @GetMapping("/routes")
     @CrossOrigin
     public ResponseEntity<List<Route>> list(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.routeService.getRoutes(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/routes/pageSize")
+    @CrossOrigin
+    public ResponseEntity<Double> pageSize() {
+        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+        int count = this.routeService.countRoute();
+        
+        return new ResponseEntity<>(Math.ceil(count*1.0/pageSize), HttpStatus.OK);
     }
     
     @DeleteMapping("/handleRoute/{id}")

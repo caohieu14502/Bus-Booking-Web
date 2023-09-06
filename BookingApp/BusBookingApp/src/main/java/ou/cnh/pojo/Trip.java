@@ -24,6 +24,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -49,11 +52,13 @@ public class Trip implements Serializable {
     private Integer id;
     @Column(name = "set_off_day")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message = "{trip.setOffDay.notNull}")
     private Date setOffDay;
     @Column(name = "set_off_time")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message = "{trip.setOffTime.notNull}")
     private Date setOffTime;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Max(value=5, message = "{trip.holidayCost.max}")  @Min(value=0, message = "{trip.holidayCost.min}")//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "holiday_cost")
     private Double holidayCost;
     @Column(name = "state")

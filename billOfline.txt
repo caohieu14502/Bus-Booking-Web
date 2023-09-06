@@ -1,0 +1,50 @@
+    @PostMapping("/pay")
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin
+    public void addBill(@RequestParam(required = false, value = "userInfo") Map<String, String> userInfo, @RequestParam(required = false, value = "carts") Map<String, Cart> carts) {
+        if(userInfo == null)
+            System.out.printf("\n%s UserInfo NULLL\n",userInfo);
+        else
+            System.out.print("\n%s UserInfo YESS\n");
+        if(carts == null)
+            System.out.printf("\n%s Cart NULLL\n",carts);
+        else
+            System.out.print("\n%s Cart YESS\n");
+        this.billService.addBill(carts, userInfo);
+    }
+
+
+
+
+
+
+
+
+const pay = () => {
+		let request = new FormData();
+		request.append("carts", carts);
+		request.append("userInfo", {
+			clientName: "Cao Hieu ne",
+			clientPhoneNumber: "6612312314",
+		});
+		setLoading(true);
+		const process = async () => {
+			let res = await authApi().post(
+				endpoints["pay"],
+				request
+				// {
+				// carts,
+				// userInfo: {
+				// 	clientName: "Cao Hieu ne",
+				// 	clientPhoneNumber: "6612312314",
+				// },
+				// }
+			);
+			if (res.status === 200) {
+				cookie.remove("cart");
+				setCarts([]);
+				setIsPaid(true);
+			}
+		};
+		process();
+	};

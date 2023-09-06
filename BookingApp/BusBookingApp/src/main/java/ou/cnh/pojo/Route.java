@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -48,12 +49,16 @@ public class Route implements Serializable {
     @Size(max = 50)
     @Column(name = "name")
     private String name;
+    @NotNull(message = "{route.durationDay.notNull}")
+    @Min(value = 0, message = "{route.durationDay.min}")
     @Column(name = "duration_days")
     private int durationDays;
+    @NotNull(message = "{route.durationDay.notNull}")
     @Column(name = "duration_time")
     private String durationTime;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{route.basicPrice.notNull}")
+    @Min(value = (long) 500.0, message = "{route.basicPrice.min}")
     @Column(name = "basic_price")
     private float basicPrice;
     @JoinColumn(name = "destination", referencedColumnName = "id")

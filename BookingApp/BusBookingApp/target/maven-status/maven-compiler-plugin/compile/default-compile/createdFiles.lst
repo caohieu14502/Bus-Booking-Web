@@ -49,6 +49,7 @@ ou\cnh\controllers\UserController.class
 ou\cnh\pojo\Route.class
 ou\cnh\controllers\ApiBusTypeController.class
 ou\cnh\formatter\BusFormatter.class
+ou\cnh\pojo\OfflineBill.class
 ou\cnh\repository\BusTypeRepository.class
 ou\cnh\service\impl\RoleServiceImpl.class
 ou\cnh\controllers\StationController.class

@@ -88,6 +88,10 @@ public class TripRepositoryImpl implements TripRepository {
                     Logger.getLogger(TripRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
+            String routeId = params.get("routeId");
+            if (routeId != null && !routeId.isEmpty())
+                    predicates.add(b.greaterThanOrEqualTo(rTrip.get("routeId"), Integer.valueOf(routeId)));
         }
 
         q.where(predicates.toArray(Predicate[]::new))

@@ -43,12 +43,8 @@
             </div>
             <c:if test="${trip != null}">
                 <div class="form-floating mb-3 mt-3" >
-                    <input type="text" class="form-control" id="setOffFrom" placeholder="" name="setOffFrom">
-                    <label for="setOffFrom">(Set Off)From</label>
-                </div>
-                <div class="form-floating mt-3 mb-3">
-                    <input type="text" class="form-control" id="setOffTo" placeholder="" name="setOffTo">
-                    <label for="setOffTo">(Set Off)To</label>
+                    <input type="date" class="form-control" id="setOffFrom" placeholder="" name="setOff">
+                    <label for="setOffFrom">Set Off</label>
                 </div>
             </c:if>
         </c:when>

@@ -19,6 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -43,9 +46,12 @@ public class Bus implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 12)
+    @Size(max = 12, min = 10, message = "{bus.plate.lengthErr}")
+    @NotNull(message = "{bus.plate.notNull}")
     @Column(name = "plate")
     private String plate;
+    @NotNull(message = "{bus.plate.notNull}")
+    @Min(value = 4, message = "{bus.numberSeats.min}") @Max(value = 100, message = "{bus.numberSeats.max}")
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
     @JsonIgnore

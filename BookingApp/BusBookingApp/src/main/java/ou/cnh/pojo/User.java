@@ -73,7 +73,7 @@ public class User implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @Size(max = 100)
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Size(max = 100)

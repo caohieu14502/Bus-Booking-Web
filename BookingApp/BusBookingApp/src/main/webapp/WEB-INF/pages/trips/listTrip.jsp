@@ -5,6 +5,7 @@
 --%>
 <a href="listTrip.jsp"></a>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="add_btn_position">
     <div>
@@ -33,7 +34,10 @@
             <tr>
                 <td>${t.id}</td>
                 <td>${t.routeId.origin.province} - ${t.routeId.destination.province}</td>
-                <td>${t.setOffDay} ${t.setOffTime}</td>
+                <td>
+                    <fmt:formatDate type = "date" value = "${t.setOffDay}" />
+                    <fmt:formatDate type = "time" value = "${t.setOffTime}" />
+                </td>
                 <td>${t.holidayCost}</td>
                 <td>${t.driverId.firstName} ${t.driverId.lastName}</td>
                 <td>${t.busId.plate}</td>

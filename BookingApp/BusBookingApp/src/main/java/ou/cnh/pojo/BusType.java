@@ -17,6 +17,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,10 +44,12 @@ public class BusType implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 30)
+    @NotNull(message = "{busType.name.notNull}")
+    @Size(max = 30, min = 5, message = "{busType.name.lengthErr}")
     @Column(name = "name")
     private String name;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @NotNull(message = "{busType.typeCost.notNull}")
+    @Max(value=5, message = "{busType.typeCost.max}")  @Min(value=1, message = "{busType.typeCost.min}")//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "type_cost")
     private Double typeCost;
     @JsonIgnore
