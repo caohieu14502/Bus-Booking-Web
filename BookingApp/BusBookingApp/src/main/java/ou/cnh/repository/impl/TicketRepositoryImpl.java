@@ -58,8 +58,10 @@ public class TicketRepositoryImpl implements TicketRepository{
             
             String email = params.get("email");
             System.out.println(email);
-            if(email != null && !email.isEmpty()) 
+            if(email != null && !email.isEmpty()) {
                 predicates.add(b.like(root.get("billId").get("userId").get("email"), String.format("%%%s%%", email)));
+                predicates.add(b.greaterThanOrEqualTo(root.get("setOffDay"), new Date()));
+            }
         
             String myTrip = params.get("myTickets");
             if( myTrip!= null) {

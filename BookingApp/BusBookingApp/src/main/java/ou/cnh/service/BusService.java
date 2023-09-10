@@ -18,4 +18,5 @@ public interface BusService {
     boolean addOrUpdateBus(Bus b);
     Bus getBusById(int id);
     boolean deleteBus(int id);
+    boolean isExistBus(Bus b);
 }

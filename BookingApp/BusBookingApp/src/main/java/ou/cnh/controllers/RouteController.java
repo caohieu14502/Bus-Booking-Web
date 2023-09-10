@@ -69,10 +69,13 @@ public class RouteController {
     
     @PostMapping("/handleRoute")
     public String add(@ModelAttribute(value = "route") @Valid Route r,
-                        BindingResult rs) {
-        if(!rs.hasErrors())
-            if(this.routeService.addOrUpdateRoute(r) == true)
+                        BindingResult rs, Model model) {
+        if(!rs.hasErrors()) {
+            if(this.routeService.isExistRoute(r))
+                model.addAttribute("existErr", "Tuyến đi này đã tồn tại");
+            else if(this.routeService.addOrUpdateRoute(r) == true)
                 return "redirect:/admin/listRoute";
+        }
         return "handleRoute";
     }
 }

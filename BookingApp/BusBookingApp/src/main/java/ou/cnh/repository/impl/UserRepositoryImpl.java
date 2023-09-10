@@ -78,6 +78,10 @@ public class UserRepositoryImpl implements UserRepository{
             String mail = params.get("email");
             if (mail != null && !mail.isEmpty())
                 predicates.add(b.like(rUser.get("email"), String.format("%%%s%%", mail)));
+            
+            String role = params.get("role");
+            if (role != null && !role.isEmpty())
+                predicates.add(b.equal(rUser.get("roleId"), Integer.valueOf(role)));
         }
 
         q.where(predicates.toArray(Predicate[]::new))

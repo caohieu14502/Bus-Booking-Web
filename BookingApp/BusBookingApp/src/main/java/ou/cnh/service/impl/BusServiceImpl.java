@@ -4,8 +4,10 @@
  */
 package ou.cnh.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ou.cnh.pojo.Bus;
@@ -45,6 +47,17 @@ public class BusServiceImpl implements BusService{
     @Override
     public boolean deleteBus(int id) {
         return this.busRepo.deleteBus(id);
+    }
+
+    @Override
+    public boolean isExistBus(Bus b) {
+        Map<String, String> params = new HashMap<>();
+        params.put("plate", b.getPlate());
+        List<Bus> busesCheck = this.busRepo.getBuses(params);
+        if(busesCheck != null) 
+            if(b.getId() != null && b.equals(busesCheck.get(0)))
+                return false;
+        return true;
     }
     
 }

@@ -9,6 +9,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <h1 class="text-center text-info mt-1">Quản lý Chuyến đi</h1>
 <c:url value="/admin/handleTrip" var="handleAction"/>
+<c:if test="${existErr != null}">
+    <div class="text-center text-danger alert alert-danger">${existErr}</div>
+</c:if>
 <form:form modelAttribute="trip" method="post" action="${handleAction}">
     <form:errors path="*" element="div" cssClass="alert alert-danger" />
     <form:hidden path="id" />
@@ -56,6 +59,22 @@
             </c:forEach>
         </form:select>
         <label for="route" class="form-label">Chọn xe:</label>
+    </div>
+    
+    <div class="form-floating mb-3 mt-3">
+        <form:select class="form-select" id="driver" name="driver" path="driverId">
+            <c:forEach items="${userss}" var="s">
+                <c:choose>
+                    <c:when test="${trip.driverId.id == s.id}">
+                        <option value="${s.id}" selected>${s.firstName} ${s.lastName}</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="${s.id}">${s.firstName} ${s.lastName}</option>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </form:select>
+        <label for="route" class="form-label">Chọn Tài xế:</label>
     </div>
 
     <div class="form-floating mb-3 mt-3">

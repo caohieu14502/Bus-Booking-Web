@@ -77,6 +77,7 @@ ou\cnh\pojo\User.class
 ou\cnh\service\impl\UserServiceImpl.class
 ou\cnh\service\FeedbackService.class
 ou\cnh\service\impl\StationServiceImpl.class
+ou\cnh\formatter\UserFormatter.class
 ou\cnh\repository\BillRepository.class
 ou\cnh\pojo\Role.class
 ou\cnh\service\TicketService.class

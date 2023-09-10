@@ -18,4 +18,5 @@ public interface RouteService {
     boolean addOrUpdateRoute(Route r);
     Route getRouteById(int id);
     boolean deleteRoute(int id);
+    boolean isExistRoute(Route r);
 }

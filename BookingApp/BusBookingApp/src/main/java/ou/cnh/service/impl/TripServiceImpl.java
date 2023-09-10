@@ -38,16 +38,6 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<Trip> getTrips(Map<String, String> params) {
-//        if(params != null){
-//            String ori = params.get("original");
-//            String des = params.get("destination");
-//            if(ori != null && !ori.isEmpty() || des != null && !des.isEmpty()) {
-//                Map<String, String> routeParams = new HashMap<>();
-//                routeParams.put("origin", ori);
-//                routeParams.put("destination", des);
-//                params.put("routeId", routeRepo.getRoutes(routeParams).get(0).getId().toString());
-//            }
-//        }
         return this.tripRepo.getTrips(params);
     }
 
@@ -94,6 +84,21 @@ public class TripServiceImpl implements TripService {
     @Override
     public Integer setHolidayCost(Map<String, String> params) {
         return this.tripRepo.setHolidayCost(params);
+    }
+
+    @Override
+    public boolean isExits(Trip t) {
+        Map<String, String> params = new HashMap<>();
+        params.put("setOff", t.getSetOffDayString());
+        params.put("setOffTime", t.getSetOffTimeString());
+        List<Trip> tripsCheck = this.tripRepo.getTrips(params);
+        if(tripsCheck != null) {
+            System.out.printf("^^\n%s\n%s\n^^",t.getDriverId(), tripsCheck.get(0).getDriverId());
+            if(t.getId() != null && (!t.getDriverId().equals(tripsCheck.get(0).getDriverId()) || !t.getBusId().equals(tripsCheck.get(0).getBusId())))
+                return false;
+            
+        }
+        return true;
     }
 
 }

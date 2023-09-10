@@ -60,10 +60,13 @@ public class BusController {
     
     @PostMapping("/handleBus")
     public String add(@ModelAttribute(value = "bus") @Valid Bus b,
-                        BindingResult rs) {
-        if(!rs.hasErrors())
-            if(this.busService.addOrUpdateBus(b) == true)
+                        BindingResult rs, Model model) {
+        if(!rs.hasErrors()) {
+            if(this.busService.isExistBus(b))
+                model.addAttribute("existErr", "Biển số xe này đã tồn tại");
+            else if(this.busService.addOrUpdateBus(b) == true)
                 return "redirect:/admin/listBus";
+        }
         return "handleBus";
     }
    

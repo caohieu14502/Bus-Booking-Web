@@ -9,6 +9,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <h1 class="text-center text-info mt-1">Quản lý Xe đi</h1>
 <c:url value="/admin/handleBus" var="handleAction"/>
+<c:if test="${existErr != null}">
+    <div class="text-center text-danger alert alert-danger">${existErr}</div>
+</c:if>
 <form:form modelAttribute="bus" method="post" action="${handleAction}">
     <form:errors path="*" element="div" cssClass="alert alert-danger" />
     <form:hidden path="id" />

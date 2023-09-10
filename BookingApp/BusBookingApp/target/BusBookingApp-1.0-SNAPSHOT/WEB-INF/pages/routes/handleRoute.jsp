@@ -9,6 +9,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <h1 class="text-center text-info mt-1">Quản lý Tuyến đi</h1>
 <c:url value="/admin/handleRoute" var="handleAction"/>
+<c:if test="${existErr != null}">
+    <div class="text-center text-danger alert alert-danger">${existErr}</div>
+</c:if>
 <form:form modelAttribute="route" method="post" action="${handleAction}">
     <form:errors path="*" element="div" cssClass="alert alert-danger" />
     <form:hidden path="id" />
@@ -51,11 +54,11 @@
     <div class="form-floating mb-3 mt-3">
         <form:input type="number" class="form-control" path="basicPrice" min="0" id="basicPrice" placeholder="Nhập giá" name="basicPrice" />
         <label for="name">Basic Price</label>
-        <%--<form:errors path="name" element="div" cssClass="text-danger"/>--%>
+        <form:errors path="basicPrice" element="div" cssClass="text-danger"/>
     </div>    
     <!-- https://stackoverflow.com/questions/34803874/spring-mvc-http-status-400-bad-request -->
     <div class="form-floating mt-3">
-        <form:input type="number" class="form-control" path="durationDays" id="hour" placeholder="Nhập thời gian" name="hour" min="0"/>
+        <form:input type="number" class="form-control" path="durationDays" required="required" id="hour" placeholder="Nhập thời gian" name="hour" min="0"/>
         <label for="hour">Số ngày chạy ước tính(Nếu > 1 Ngày)</label>
     </div>
     <div class="form-floating mb-3">
@@ -66,7 +69,6 @@
     </div>
 
     <div class="form-floating mb-3 mt-3">
-
         <button class="btn btn-success" id="btn-Route" type="submit">
             <c:choose>
                 <c:when test="${route.id != null}">

@@ -19,7 +19,7 @@
             <th>Plate</th>
             <th>Number of Seats </th>
             <th>Type</th>
-            <th style="width: 200px"></th>
+            <th style="width: 300px"></th>
         </tr>
     </thead>
     <tbody>
@@ -31,8 +31,8 @@
                 <td>${b.busTypeId.name}</td>
                 <td>
                     
-                    <a href="<c:url value="handleBus/${b.id}" />" class="btn btn-primary">Cập nhật Bus</a>
-                    <a href="<c:url value="handleSeats/${b.id}" />" class="btn btn-primary">Cập nhật Seats</a>
+                    <a href="<c:url value="handleBus/${b.id}" />" class="btn btn-primary">Cập nhật</a>
+                    <a href="<c:url value="handleSeats/${b.id}" />" class="btn btn-primary">Seats</a>
                     <button class="btn btn-danger" onclick="deleteApi('<c:url value="/api/handleBus/${b.id}" />')">Xóa</button>
                 </td>
             </tr>

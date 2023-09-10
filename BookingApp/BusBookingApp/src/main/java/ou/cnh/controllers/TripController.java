@@ -22,6 +22,7 @@ import ou.cnh.pojo.Trip;
 import ou.cnh.service.BusService;
 import ou.cnh.service.RouteService;
 import ou.cnh.service.TripService;
+import ou.cnh.service.UserService;
 
 /**
  *
@@ -36,31 +37,29 @@ public class TripController {
     private TripService tripService;
     @Autowired
     private BusService busService;
-//    @Autowired
-//    private ticketSer
+    @Autowired
+    private UserService userService;
     @Autowired
     private Environment env;
     
     @ModelAttribute
     public void commonAtt(Model model) {
+        model.addAttribute("routes", this.routeService.getRoutes(null));
+        model.addAttribute("buses", this.busService.getBuses(null));
+        
+        Map<String, String> paramsUser = new HashMap<>();
+        paramsUser.put("role", "3");
+        model.addAttribute("userss", this.userService.getUsers(paramsUser));
     }
     
     @RequestMapping("/listTrip")
     public String list(Model model,
             @RequestParam Map<String, String> params) {
         
-        Map<String, String> paramsRoute = new HashMap<>();
-        paramsRoute.put("origin", "Sai Gon");
-        paramsRoute.put("destination", "Da");
-        
         int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         int count = this.tripService.countTrip();
         model.addAttribute("counter", Math.ceil(count*1.0/pageSize));
         
-        Map<String, String> paramsTrip = new HashMap<>();
-//        Ép nó lấy 1 cái thôi
-//        String x = this.routeService.getRoutes(paramsRoute).get(0).getId().toString();
-//        paramsTrip.put("tripId", "1");
         model.addAttribute("trip", this.tripService.getTrips(params));
 
         return "listTrip";
@@ -69,37 +68,33 @@ public class TripController {
     @GetMapping("/handleTrip")
     public String add(Model model) {
         model.addAttribute("trip", new Trip());
-        model.addAttribute("routes", this.routeService.getRoutes(null));
-        model.addAttribute("buses", this.busService.getBuses(null));
+
+
         return "handleTrip";
     }
     
     @GetMapping("/handleTrip/{id}")
     public String update(Model model, @PathVariable(value = "id") int id) {
         model.addAttribute("trip", this.tripService.getTripById(id));
-        model.addAttribute("routes", this.routeService.getRoutes(null));
-        model.addAttribute("buses", this.busService.getBuses(null));
 
         return "handleTrip";
     }
     
     @PostMapping("/handleTrip")
     public String add(@ModelAttribute(value = "trip") @Valid Trip t,
-                        BindingResult rs) {
-        if(!rs.hasErrors())
-            if(this.tripService.addOrUpdateTrip(t) == true)
+                        BindingResult rs, Model model) {
+        if(!rs.hasErrors()) {
+            if(this.tripService.isExits(t))
+                model.addAttribute("existErr", "Tài xế hoặc Xe đã có lịch ở thời điểm này");
+            else if(this.tripService.addOrUpdateTrip(t) == true)
                 return "redirect:/admin/listTrip";
+        }
+
         return "handleTrip";
     }
     
     @PostMapping("/setPriceTrip")
     public String updatePrice(@RequestParam Map<String, String> params, Model model) {
-//        params.put("setOffDay", "08-12-2023");
-//        params.put("endTime", "08-28-2023");
-//        params.put("cost", "1.4");
-        System.out.printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n%s\n%s\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
-                params.get("cost"), params.get("endTime"));
-
         if(this.tripService.setHolidayCost(params)<0) {
             model.addAttribute("errMsg", "Something's wrong! try again later.");
             return "setPriceTrip"; 
@@ -113,18 +108,4 @@ public class TripController {
     public String updatePrice() {
         return "setPriceTrip";
     }
-    
-//    @GetMapping("/handleTickets/{tripId}")
-//    public String handleTickets(Model model, @PathVariable(value = "tripId") int tripId ) {
-//        model.addAttribute("tripId", tripId);
-//        return "handleTickets";
-//    }
-//    
-//    @PostMapping("/handleTickets")
-//    public String handleTickets(@RequestParam(value="selectedValue") String[] seats,
-//                                @RequestParam(value="tripId") int tripId) {
-////        if(this.seatService.addOrUpdateSeat(seats, busId))
-////            return "redirect:/admin/listTrip";
-//        return "handleTickets";
-//    }
 }

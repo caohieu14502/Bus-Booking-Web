@@ -52,11 +52,9 @@ public class Trip implements Serializable {
     private Integer id;
     @Column(name = "set_off_day")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message = "{trip.setOffDay.notNull}")
     private Date setOffDay;
     @Column(name = "set_off_time")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message = "{trip.setOffTime.notNull}")
     private Date setOffTime;
     @Max(value=5, message = "{trip.holidayCost.max}")  @Min(value=0, message = "{trip.holidayCost.min}")//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "holiday_cost")
@@ -80,8 +78,10 @@ public class Trip implements Serializable {
     private Set<Feedback> feedbackSet;
     
     @Transient
+    @NotNull(message = "{trip.setOffDay.notNull}")
     private String setOffDayString;
     @Transient
+    @NotNull(message = "{trip.setOffTime.notNull}")
     private String setOffTimeString;
 
     public Trip() {

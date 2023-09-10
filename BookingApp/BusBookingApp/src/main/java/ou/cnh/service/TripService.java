@@ -6,7 +6,9 @@ package ou.cnh.service;
 
 import java.util.List;
 import java.util.Map;
+import ou.cnh.pojo.Bus;
 import ou.cnh.pojo.Trip;
+import ou.cnh.pojo.User;
 
 /**
  *
@@ -19,4 +21,5 @@ public interface TripService {
     boolean addOrUpdateTrip(Trip t);
     boolean deleteTrip(int id);
     Integer setHolidayCost(Map<String, String> params);
+    boolean isExits(Trip t);
 }

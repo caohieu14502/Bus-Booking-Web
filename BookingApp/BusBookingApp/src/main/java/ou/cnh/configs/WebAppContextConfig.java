@@ -30,6 +30,7 @@ import ou.cnh.formatter.BusTypeFormatter;
 import ou.cnh.formatter.RoleFormatter;
 import ou.cnh.formatter.RouteFormatter;
 import ou.cnh.formatter.StationFormatter;
+import ou.cnh.formatter.UserFormatter;
 
 /**
  *
@@ -63,7 +64,7 @@ public class WebAppContextConfig implements WebMvcConfigurer {
         registry.addFormatter(new RouteFormatter());
         registry.addFormatter(new RoleFormatter());
         registry.addFormatter(new BusTypeFormatter());
-
+        registry.addFormatter(new UserFormatter());
     }
 
     //bật multipart, form data lên chỗ cần uphình

@@ -4,10 +4,14 @@
  */
 package ou.cnh.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,11 +41,26 @@ public class ApiTripController {
     private TripService tripService;
     @Autowired
     private FeedbackService feedbackService;
+    @Resource(name = "simpleDateFormat")
+    private SimpleDateFormat simpleDateFormat;
+    @Autowired
+    private Environment env;
     
     @GetMapping("/trips")
     @CrossOrigin
     public ResponseEntity<List<Trip>> list(@RequestParam Map<String, String> params) {
+        if(params.get("setOff") == null)
+            params.put("setOff", simpleDateFormat.format(new Date()));
         return new ResponseEntity<>(this.tripService.getTrips(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/trips/pageSize")
+    @CrossOrigin
+    public ResponseEntity<Double> pageSize() {
+        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+        int count = this.tripService.countTrip();
+        
+        return new ResponseEntity<>(Math.ceil(count*1.0/pageSize), HttpStatus.OK);
     }
     
     @DeleteMapping("/handleTrip/{id}")

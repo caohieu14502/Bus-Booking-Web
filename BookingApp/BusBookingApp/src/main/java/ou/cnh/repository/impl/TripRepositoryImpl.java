@@ -80,7 +80,7 @@ public class TripRepositoryImpl implements TripRepository {
             }
 
             //Lọc theo ngày xuất phát, theo giờ
-            String fd = params.get("setOffDay");
+            String fd = params.get("setOff");
             if (fd != null && !fd.isEmpty()) {
                 try {
                     predicates.add(b.greaterThanOrEqualTo(rTrip.get("setOffDay"), simpleDateFormat.parse(fd)));
@@ -89,9 +89,18 @@ public class TripRepositoryImpl implements TripRepository {
                 }
             }
             
+            String ft = params.get("setOffTime");
+            if (ft != null && !ft.isEmpty()) {
+                try {
+                    predicates.add(b.equal(rTrip.get("setOffTime"), f2.parse(ft)));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TripRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
             String routeId = params.get("routeId");
             if (routeId != null && !routeId.isEmpty())
-                    predicates.add(b.greaterThanOrEqualTo(rTrip.get("routeId"), Integer.valueOf(routeId)));
+                    predicates.add(b.equal(rTrip.get("routeId"), Integer.valueOf(routeId)));
         }
 
         q.where(predicates.toArray(Predicate[]::new))
